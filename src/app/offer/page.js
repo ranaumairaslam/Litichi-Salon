@@ -215,7 +215,7 @@ export default function offer() {
 
             {/* Heading */}
             <h1 
-              className="text-5xl md:text-6xl font-bold mb-6 leading-tight"
+              className="text-5xl md:text-6xl font-bold mb-6 leading-tight mt-4"
               style={{ color: colors.text }}
             >
               Exclusive Deals & 

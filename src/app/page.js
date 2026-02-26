@@ -24,7 +24,7 @@ export default function Home() {
     <Blog />  
     <Footer />
     <Mega />
-    <Whatsapp />
+  
       </div>
   );
 }

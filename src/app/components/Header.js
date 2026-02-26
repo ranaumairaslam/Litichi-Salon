@@ -149,7 +149,7 @@ export default function Header() {
           </li>
 
           <li className="relative group">
-            <Link href="#academy" className="relative inline-block">
+            <Link href="/academy" className="relative inline-block">
               <span style={{ color: colors.gold }}>Academy</span>
               <span
                 className="absolute left-0 -bottom-1 w-0  transition-all duration-300 group-hover:w-full"
