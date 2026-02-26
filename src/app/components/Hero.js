@@ -9,7 +9,7 @@ export default function Hero() {
 
       {/* Optional Background Image */}
       <Image
-        src="/background.jpg" // Put your background image in public/background.jpg
+        src="/image.jpg" // Put your background image in public/background.jpg
         alt=""
         fill
         priority
@@ -37,7 +37,7 @@ export default function Hero() {
           initial={{ opacity: 0, x: -80 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1.2 }}
-          className="mt-6 text-[#3D352B] text-lg md:text-xl"
+          className="mt-6 text-white text-lg md:text-xl"
         >
           Where Elegance Meets Perfection. Transform your style with our premium salon services.
         </motion.p>
