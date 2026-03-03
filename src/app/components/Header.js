@@ -32,7 +32,7 @@ export default function Header() {
         borderColor: colors.gold,
       }}
     >
-      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between ">
         
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3 group">
@@ -162,13 +162,13 @@ export default function Header() {
         >
           <ul className="flex flex-col gap-4 p-6" style={{ color: colors.gold }}>
             <li><Link href="/">Home</Link></li>
-            <li><Link href="#services">Services</Link></li>
+            <li><Link href="/services">Services</Link></li>
             <li><Link href="/about">About</Link></li>
-            <li><Link href="#offers">Offers</Link></li>
-            <li><Link href="#academy">Academy</Link></li>
+            <li><Link href="/offers">Offers</Link></li>
+            <li><Link href="/academy">Academy</Link></li>
             <li>
               <Link
-                href="#contact"
+                href="/contact"
                 className="block px-6 py-2 rounded-full text-center mt-2"
                 style={{ border: `1px solid ${colors.gold}`, color: colors.gold }}
               >
