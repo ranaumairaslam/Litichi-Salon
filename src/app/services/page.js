@@ -16,8 +16,10 @@ import {
   Clock,
   CheckCircle2,
   Star,
-  ArrowRight
+  ArrowRight,
+  Heart
 } from "lucide-react";
+import { megaMenuData } from "../data/megaMenuData";
 
 export default function ServicesPage() {
   // Day Mode Color Palette
@@ -31,6 +33,16 @@ export default function ServicesPage() {
     textMuted: "#6B6B6B",
     lightBeige: "#FFF8F0",
     border: "#E8D5B7",
+  };
+
+  // Map mega menu categories to service page format
+  const categoryIcons = {
+    hair: Scissors,
+    skin: Sparkles,
+    makeup: Palette,
+    nails: Hand,
+    beauty: Droplet,
+    spa: Heart,
   };
 
   const serviceCategories = [

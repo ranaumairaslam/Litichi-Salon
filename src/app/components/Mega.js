@@ -1,101 +1,43 @@
 "use client";
 
 import Link from "next/link";
+import { megaMenuData } from "../data/megaMenuData";
 
-export default function Mega({ isOpen }) {
+export default function Mega({ isOpen, category }) {
+  if (!isOpen) return null;
 
-if (!isOpen) return null;
+  // Filter data based on category if provided, otherwise show all
+  const displayData = category 
+    ? megaMenuData.filter(item => item.id === category)
+    : megaMenuData;
 
+  // If category is specified but not found, show all
+  const finalData = displayData.length > 0 ? displayData : megaMenuData;
 
-return (
-
-
-<div className="absolute left-0 top-full mt-4 w-[750px] bg-[#111111] border border-[#D4AF37]/20 p-8 rounded-xl shadow-xl">
-
-
-  <div className="grid grid-cols-3 gap-8">
-
-
-    {/* Hair */}
-
-
-    <div>
-
-      <h3 className="text-[#D4AF37] font-semibold mb-3">
-
-        Hair Services
-
-      </h3>
-
-      <ul className="space-y-2 text-gray-400">
-
-        <li><Link href="/services">Hair Cut</Link></li>
-
-        <li><Link href="/services">Hair Styling</Link></li>
-
-        <li><Link href="/services">Hair Color</Link></li>
-
-      </ul>
-
+  return (
+    <div className="absolute left-0 top-full mt-4 w-[800px] bg-white border p-6 rounded-xl shadow-xl z-50">
+      <div className="grid grid-cols-3 gap-6">
+        {finalData.map((categoryItem) => (
+          <div key={categoryItem.id}>
+            <h3 className="font-bold mb-3" style={{ color: "#C9A14A" }}>
+              {categoryItem.name}
+            </h3>
+            <ul className="space-y-2">
+              {categoryItem.services.map((service, index) => (
+                <li key={index}>
+                  <Link 
+                    href={service.link} 
+                    className="block py-1 hover:text-gold transition-colors"
+                    style={{ color: "#2A2A2A" }}
+                  >
+                    {service.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
     </div>
-
-
-
-    {/* Skin */}
-
-
-    <div>
-
-      <h3 className="text-[#D4AF37] font-semibold mb-3">
-
-        Skin Services
-
-      </h3>
-
-      <ul className="space-y-2 text-gray-400">
-
-        <li><Link href="/services">Facial</Link></li>
-
-        <li><Link href="/services">Cleanup</Link></li>
-
-        <li><Link href="/services">Skin Care</Link></li>
-
-      </ul>
-
-    </div>
-
-
-
-    {/* Beauty */}
-
-
-    <div>
-
-      <h3 className="text-[#D4AF37] font-semibold mb-3">
-
-        Beauty Services
-
-      </h3>
-
-      <ul className="space-y-2 text-gray-400">
-
-        <li><Link href="/services">Makeup</Link></li>
-
-        <li><Link href="/services">Manicure</Link></li>
-
-        <li><Link href="/services">Pedicure</Link></li>
-
-      </ul>
-
-    </div>
-
-
-  </div>
-
-
-</div>
-
-
-);
-
+  );
 }

@@ -4,9 +4,12 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
+import Mega from "./Mega";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [megaMenuOpen, setMegaMenuOpen] = useState(false);
+  const [activeCategory, setActiveCategory] = useState(null);
 
   const colors = {
     charcoal: "#2A2A2A",
@@ -80,7 +83,14 @@ export default function Header() {
           </li>
 
           {/* Services with Mega Menu */}
-          <li className="relative group">
+          <li 
+            className="relative group"
+            onMouseEnter={() => {
+              setMegaMenuOpen(true);
+              setActiveCategory(null);
+            }}
+            onMouseLeave={() => setMegaMenuOpen(false)}
+          >
             <Link href="/services" className="relative inline-block">
               <span style={{ color: colors.gold }}>Services</span>
               <span
@@ -88,41 +98,7 @@ export default function Header() {
                 style={{ backgroundColor: colors.gold }}
               ></span>
             </Link>
-            <div
-              className="absolute left-0 top-full mt-2 w-200 shadow-lg opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-all duration-300 z-50 rounded-xl"
-              style={{
-                backgroundColor: "white",
-                borderColor: colors.brown2,
-                borderStyle: "solid",
-              }}
-            >
-              <div className="grid grid-cols-3 gap-6 p-6">
-                <div>
-                  <h3 className="font-bold mb-2" style={{ color: colors.gold }}>Hair</h3>
-                  <ul>
-                    <li><Link href="/services/haircut" className="block py-1 hover:text-gold" style={{ color: colors.charcoal }}>Haircut</Link></li>
-                    <li><Link href="/services/color" className="block py-1 hover:text-gold" style={{ color: colors.charcoal }}>Hair Color</Link></li>
-                    <li><Link href="/services/styling" className="block py-1 hover:text-gold" style={{ color: colors.charcoal }}>Styling</Link></li>
-                  </ul>
-                </div>
-                <div>
-                  <h3 className="font-bold mb-2" style={{ color: colors.gold }}>Skin</h3>
-                  <ul>
-                    <li><Link href="/services/facial" className="block py-1 hover:text-gold" style={{ color: colors.charcoal }}>Facial</Link></li>
-                    <li><Link href="/services/massage" className="block py-1 hover:text-gold" style={{ color: colors.charcoal }}>Massage</Link></li>
-                    <li><Link href="/services/body" className="block py-1 hover:text-gold" style={{ color: colors.charcoal }}>Body Treatments</Link></li>
-                  </ul>
-                </div>
-                <div>
-                  <h3 className="font-bold mb-2" style={{ color: colors.gold }}>Nails</h3>
-                  <ul>
-                    <li><Link href="/services/manicure" className="block py-1 hover:text-gold" style={{ color: colors.charcoal }}>Manicure</Link></li>
-                    <li><Link href="/services/pedicure" className="block py-1 hover:text-gold" style={{ color: colors.charcoal }}>Pedicure</Link></li>
-                    <li><Link href="/services/nailart" className="block py-1 hover:text-gold" style={{ color: colors.charcoal }}>Nail Art</Link></li>
-                  </ul>
-                </div>
-              </div>
-            </div>
+            <Mega isOpen={megaMenuOpen} category={activeCategory} />
           </li>
 
           <li className="relative group">
