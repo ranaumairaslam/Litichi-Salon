@@ -571,7 +571,7 @@ export default function offer() {
                     color: colors.gold,
                   }}
                 >
-                  Book Now
+                 <a href="bookappointment" className="text-gold no-underline">Book Now</a>
                 </motion.button>
                 <motion.button
                   whileHover={{ scale: 1.05 }}
@@ -591,7 +591,7 @@ export default function offer() {
                     e.currentTarget.style.color = colors.background;
                   }}
                 >
-                  Call Us
+              <a href="/" className="text-gold no-underline">Call us</a>
                 </motion.button>
               </div>
             </div>
