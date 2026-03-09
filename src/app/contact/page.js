@@ -4,6 +4,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { motion } from "framer-motion";
 import { useState } from "react";
+import emailjs from "@emailjs/browser";
 import { 
   MapPin,
   Phone,
@@ -103,7 +104,6 @@ export default function ContactPage() {
       color: "#FF0000",
       followers: "15.3K",
     },
-   
   ];
 
   const services = [
@@ -127,12 +127,26 @@ export default function ContactPage() {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate form submission
-    setTimeout(() => {
+    try {
+      const templateParams = {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        service: formData.service,
+        date: formData.date,
+        message: formData.message,
+      };
+
+      await emailjs.send(
+        "YOUR_SERVICE_ID",   // replace with your EmailJS service ID
+        "YOUR_TEMPLATE_ID",  // replace with your EmailJS template ID
+        templateParams,
+        "YOUR_PUBLIC_KEY"    // replace with your EmailJS public key
+      );
+
       setIsSubmitting(false);
       setIsSubmitted(true);
-      
-      // Reset form after 3 seconds
+
       setTimeout(() => {
         setIsSubmitted(false);
         setFormData({
@@ -144,7 +158,11 @@ export default function ContactPage() {
           message: "",
         });
       }, 3000);
-    }, 2000);
+    } catch (error) {
+      console.error("Email send error:", error);
+      setIsSubmitting(false);
+      alert("Failed to send email. Please try again.");
+    }
   };
 
   return (
@@ -167,15 +185,6 @@ export default function ContactPage() {
             transition={{ duration: 0.8 }}
             className="text-center max-w-4xl mx-auto"
           >
-            <motion.div
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5 }}
-              className="inline-block mb-6"
-            >
-             
-            </motion.div>
-
             <h1 
               className="text-5xl md:text-6xl font-bold mb-6 leading-tight"
               style={{ color: colors.text }}
@@ -208,16 +217,7 @@ export default function ContactPage() {
                 viewport={{ once: true }}
                 whileHover={{ y: -10 }}
                 className="text-center p-6 rounded-2xl border-2 shadow-lg hover:shadow-xl transition-all duration-300"
-                style={{ 
-                  backgroundColor: colors.cardBg,
-                  borderColor: colors.border,
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = colors.gold;
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = colors.border;
-                }}
+                style={{ backgroundColor: colors.cardBg, borderColor: colors.border }}
               >
                 <div 
                   className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
@@ -225,18 +225,11 @@ export default function ContactPage() {
                 >
                   <info.icon size={32} style={{ color: colors.gold }} />
                 </div>
-                <h3 
-                  className="text-xl font-bold mb-3"
-                  style={{ color: colors.text }}
-                >
+                <h3 className="text-xl font-bold mb-3" style={{ color: colors.text }}>
                   {info.title}
                 </h3>
                 {info.details.map((detail, idx) => (
-                  <p 
-                    key={idx}
-                    className="text-sm mb-1"
-                    style={{ color: colors.textMuted }}
-                  >
+                  <p key={idx} className="text-sm mb-1" style={{ color: colors.textMuted }}>
                     {detail}
                   </p>
                 ))}
@@ -246,282 +239,108 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* Main Content: Form + Map */}
-      <section 
-        className="py-16"
-        style={{ backgroundColor: colors.lightBeige }}
-      >
+      {/* Form + Map */}
+      <section className="py-16" style={{ backgroundColor: colors.lightBeige }}>
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-12">
             
             {/* Contact Form */}
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-            >
-              <div 
-                className="rounded-3xl p-8 md:p-10 border-2 shadow-xl"
-                style={{ 
-                  backgroundColor: colors.cardBg,
-                  borderColor: colors.border,
-                }}
-              >
-                <h2 
-                  className="text-3xl font-bold mb-2"
-                  style={{ color: colors.text }}
-                >
-                  Send us a Message
-                </h2>
-                <p 
-                  className="mb-8"
-                  style={{ color: colors.textMuted }}
-                >
+            <motion.div initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }}>
+              <div className="rounded-3xl p-8 md:p-10 border-2 shadow-xl" style={{ backgroundColor: colors.cardBg, borderColor: colors.border }}>
+                <h2 className="text-3xl font-bold mb-2" style={{ color: colors.text }}>Send us a Message</h2>
+                <p className="mb-8" style={{ color: colors.textMuted }}>
                   Fill out the form below and we'll get back to you shortly
                 </p>
 
                 {isSubmitted ? (
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    className="text-center py-12"
-                  >
-                    <div 
-                      className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4"
-                      style={{ backgroundColor: colors.lightGold }}
-                    >
+                  <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="text-center py-12">
+                    <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4" style={{ backgroundColor: colors.lightGold }}>
                       <CheckCircle size={48} style={{ color: colors.gold }} />
                     </div>
-                    <h3 
-                      className="text-2xl font-bold mb-2"
-                      style={{ color: colors.text }}
-                    >
-                      Message Sent!
-                    </h3>
-                    <p style={{ color: colors.textMuted }}>
-                      We'll get back to you soon.
-                    </p>
+                    <h3 className="text-2xl font-bold mb-2" style={{ color: colors.text }}>Message Sent!</h3>
+                    <p style={{ color: colors.textMuted }}>We'll get back to you soon.</p>
                   </motion.div>
                 ) : (
                   <form onSubmit={handleSubmit}>
                     {/* Name */}
                     <div className="mb-6">
-                      <label 
-                        className="flex items-center gap-2 font-semibold mb-3 text-sm uppercase tracking-wider"
-                        style={{ color: colors.text }}
-                      >
-                        <User size={16} style={{ color: colors.gold }} />
-                        Your Name
+                      <label className="flex items-center gap-2 font-semibold mb-3 text-sm uppercase tracking-wider" style={{ color: colors.text }}>
+                        <User size={16} style={{ color: colors.gold }} /> Your Name
                       </label>
-                      <input
-                        type="text"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleChange}
-                        required
-                        placeholder="John Doe"
+                      <input type="text" name="name" value={formData.name} onChange={handleChange} required placeholder="John Doe"
                         className="w-full px-5 py-4 rounded-xl border-2 outline-none transition-all duration-300"
-                        style={{ 
-                          borderColor: colors.border,
-                          backgroundColor: colors.background,
-                          color: colors.text,
-                        }}
-                        onFocus={(e) => {
-                          e.target.style.borderColor = colors.gold;
-                        }}
-                        onBlur={(e) => {
-                          e.target.style.borderColor = colors.border;
-                        }}
+                        style={{ borderColor: colors.border, backgroundColor: colors.background, color: colors.text }}
                       />
                     </div>
 
                     {/* Email */}
                     <div className="mb-6">
-                      <label 
-                        className="flex items-center gap-2 font-semibold mb-3 text-sm uppercase tracking-wider"
-                        style={{ color: colors.text }}
-                      >
-                        <Mail size={16} style={{ color: colors.gold }} />
-                        Email Address
+                      <label className="flex items-center gap-2 font-semibold mb-3 text-sm uppercase tracking-wider" style={{ color: colors.text }}>
+                        <Mail size={16} style={{ color: colors.gold }} /> Email Address
                       </label>
-                      <input
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
-                        placeholder="john@example.com"
+                      <input type="email" name="email" value={formData.email} onChange={handleChange} required placeholder="john@example.com"
                         className="w-full px-5 py-4 rounded-xl border-2 outline-none transition-all duration-300"
-                        style={{ 
-                          borderColor: colors.border,
-                          backgroundColor: colors.background,
-                          color: colors.text,
-                        }}
-                        onFocus={(e) => {
-                          e.target.style.borderColor = colors.gold;
-                        }}
-                        onBlur={(e) => {
-                          e.target.style.borderColor = colors.border;
-                        }}
+                        style={{ borderColor: colors.border, backgroundColor: colors.background, color: colors.text }}
                       />
                     </div>
 
                     {/* Phone */}
                     <div className="mb-6">
-                      <label 
-                        className="flex items-center gap-2 font-semibold mb-3 text-sm uppercase tracking-wider"
-                        style={{ color: colors.text }}
-                      >
-                        <Phone size={16} style={{ color: colors.gold }} />
-                        Phone Number
+                      <label className="flex items-center gap-2 font-semibold mb-3 text-sm uppercase tracking-wider" style={{ color: colors.text }}>
+                        <Phone size={16} style={{ color: colors.gold }} /> Phone Number
                       </label>
-                      <input
-                        type="tel"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleChange}
-                        required
-                        placeholder="+92 300 1234567"
+                      <input type="tel" name="phone" value={formData.phone} onChange={handleChange} required placeholder="+92 300 1234567"
                         className="w-full px-5 py-4 rounded-xl border-2 outline-none transition-all duration-300"
-                        style={{ 
-                          borderColor: colors.border,
-                          backgroundColor: colors.background,
-                          color: colors.text,
-                        }}
-                        onFocus={(e) => {
-                          e.target.style.borderColor = colors.gold;
-                        }}
-                        onBlur={(e) => {
-                          e.target.style.borderColor = colors.border;
-                        }}
+                        style={{ borderColor: colors.border, backgroundColor: colors.background, color: colors.text }}
                       />
                     </div>
 
                     {/* Service */}
                     <div className="mb-6">
-                      <label 
-                        className="flex items-center gap-2 font-semibold mb-3 text-sm uppercase tracking-wider"
-                        style={{ color: colors.text }}
-                      >
-                        <Calendar size={16} style={{ color: colors.gold }} />
-                        Service Interested In
+                      <label className="flex items-center gap-2 font-semibold mb-3 text-sm uppercase tracking-wider" style={{ color: colors.text }}>
+                        <Calendar size={16} style={{ color: colors.gold }} /> Service Interested In
                       </label>
-                      <select
-                        name="service"
-                        value={formData.service}
-                        onChange={handleChange}
-                        required
+                      <select name="service" value={formData.service} onChange={handleChange} required
                         className="w-full px-5 py-4 rounded-xl border-2 outline-none transition-all duration-300"
-                        style={{ 
-                          borderColor: colors.border,
-                          backgroundColor: colors.background,
-                          color: colors.text,
-                        }}
-                        onFocus={(e) => {
-                          e.target.style.borderColor = colors.gold;
-                        }}
-                        onBlur={(e) => {
-                          e.target.style.borderColor = colors.border;
-                        }}
+                        style={{ borderColor: colors.border, backgroundColor: colors.background, color: colors.text }}
                       >
                         <option value="">Select a service</option>
                         {services.map((service, idx) => (
-                          <option key={idx} value={service}>
-                            {service}
-                          </option>
+                          <option key={idx} value={service}>{service}</option>
                         ))}
                       </select>
                     </div>
 
-                    {/* Preferred Date */}
+                    {/* Date */}
                     <div className="mb-6">
-                      <label 
-                        className="flex items-center gap-2 font-semibold mb-3 text-sm uppercase tracking-wider"
-                        style={{ color: colors.text }}
-                      >
-                        <Calendar size={16} style={{ color: colors.gold }} />
-                        Preferred Date
+                      <label className="flex items-center gap-2 font-semibold mb-3 text-sm uppercase tracking-wider" style={{ color: colors.text }}>
+                        <Calendar size={16} style={{ color: colors.gold }} /> Preferred Date
                       </label>
-                      <input
-                        type="date"
-                        name="date"
-                        value={formData.date}
-                        onChange={handleChange}
-                        required
+                      <input type="date" name="date" value={formData.date} onChange={handleChange} required
                         className="w-full px-5 py-4 rounded-xl border-2 outline-none transition-all duration-300"
-                        style={{ 
-                          borderColor: colors.border,
-                          backgroundColor: colors.background,
-                          color: colors.text,
-                        }}
-                        onFocus={(e) => {
-                          e.target.style.borderColor = colors.gold;
-                        }}
-                        onBlur={(e) => {
-                          e.target.style.borderColor = colors.border;
-                        }}
+                        style={{ borderColor: colors.border, backgroundColor: colors.background, color: colors.text }}
                       />
                     </div>
 
                     {/* Message */}
                     <div className="mb-8">
-                      <label 
-                        className="flex items-center gap-2 font-semibold mb-3 text-sm uppercase tracking-wider"
-                        style={{ color: colors.text }}
-                      >
-                        <MessageSquare size={16} style={{ color: colors.gold }} />
-                        Your Message
+                      <label className="flex items-center gap-2 font-semibold mb-3 text-sm uppercase tracking-wider" style={{ color: colors.text }}>
+                        <MessageSquare size={16} style={{ color: colors.gold }} /> Your Message
                       </label>
-                      <textarea
-                        name="message"
-                        value={formData.message}
-                        onChange={handleChange}
-                        required
-                        rows="5"
-                        placeholder="Tell us more about your requirements..."
+                      <textarea name="message" value={formData.message} onChange={handleChange} required rows="5" placeholder="Tell us more..."
                         className="w-full px-5 py-4 rounded-xl border-2 outline-none resize-none transition-all duration-300"
-                        style={{ 
-                          borderColor: colors.border,
-                          backgroundColor: colors.background,
-                          color: colors.text,
-                        }}
-                        onFocus={(e) => {
-                          e.target.style.borderColor = colors.gold;
-                        }}
-                        onBlur={(e) => {
-                          e.target.style.borderColor = colors.border;
-                        }}
-                      ></textarea>
+                        style={{ borderColor: colors.border, backgroundColor: colors.background, color: colors.text }}
+                      />
                     </div>
 
-                    {/* Submit Button */}
-                    <motion.button
-                      type="submit"
-                      disabled={isSubmitting}
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
+                    {/* Submit */}
+                    <motion.button type="submit" disabled={isSubmitting} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
                       className="w-full py-4 px-8 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
-                      style={{ 
-                        backgroundColor: colors.gold,
-                        color: colors.background,
-                      }}
+                      style={{ backgroundColor: colors.gold, color: colors.background }}
                     >
                       {isSubmitting ? (
-                        <>
-                          <motion.div
-                            animate={{ rotate: 360 }}
-                            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                            className="w-5 h-5 border-2 border-white border-t-transparent rounded-full"
-                          />
-                          Sending...
-                        </>
-                      ) : (
-                        <>
-                          Send Message
-                          <Send size={20} />
-                        </>
-                      )}
+                        <motion.div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                      ) : <>Send Message <Send size={20} /></>}
                     </motion.button>
                   </form>
                 )}
@@ -529,88 +348,37 @@ export default function ContactPage() {
             </motion.div>
 
             {/* Map + Social Media */}
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="space-y-8"
-            >
-              {/* Map */}
-              <div 
-                id="map"
-                className="rounded-3xl overflow-hidden border-2 shadow-xl h-96"
-                style={{ borderColor: colors.border }}
-              >
+            <motion.div initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }} className="space-y-8">
+              <div id="map" className="rounded-3xl overflow-hidden border-2 shadow-xl h-96" style={{ borderColor: colors.border }}>
                 <iframe
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3506.0389469846947!2d73.25213931508064!3d29.997407081940587!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3922d7f5c5555555%3A0x5555555555555555!2sBahawalnagar%2C%20Pakistan!5e0!3m2!1sen!2s!4v1234567890123!5m2!1sen!2s"
                   width="100%"
                   height="100%"
                   style={{ border: 0 }}
-                  allowFullScreen=""
+                  allowFullScreen
                   loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
                   title="Salon Location"
                 ></iframe>
               </div>
 
               {/* Social Media */}
-              <div 
-                className="rounded-3xl p-8 border-2 shadow-xl"
-                style={{ 
-                  backgroundColor: colors.cardBg,
-                  borderColor: colors.border,
-                }}
-              >
-                <h3 
-                  className="text-2xl font-bold mb-6"
-                  style={{ color: colors.text }}
-                >
-                  Connect With Us
-                </h3>
-                
+              <div className="rounded-3xl p-8 border-2 shadow-xl" style={{ backgroundColor: colors.cardBg, borderColor: colors.border }}>
+                <h3 className="text-2xl font-bold mb-6" style={{ color: colors.text }}>Connect With Us</h3>
                 <div className="space-y-4">
                   {socialMedia.map((social, index) => (
-                    <motion.a
-                      key={index}
-                      href={social.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      whileHover={{ x: 10, scale: 1.02 }}
-                      className="flex items-center justify-between p-4 rounded-xl transition-all duration-300"
-                      style={{ backgroundColor: colors.lightBeige }}
+                    <motion.a key={index} href={social.link} target="_blank" rel="noopener noreferrer" whileHover={{ x: 10, scale: 1.02 }}
+                      className="flex items-center justify-between p-4 rounded-xl transition-all duration-300" style={{ backgroundColor: colors.lightBeige }}
                     >
                       <div className="flex items-center gap-4">
-                        <div 
-                          className="w-12 h-12 rounded-full flex items-center justify-center"
-                          style={{ backgroundColor: `${social.color}20` }}
-                        >
+                        <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ backgroundColor: `${social.color}20` }}>
                           <social.icon size={24} style={{ color: social.color }} />
                         </div>
                         <div>
-                          <p 
-                            className="font-bold"
-                            style={{ color: colors.text }}
-                          >
-                            {social.name}
-                          </p>
-                          <p 
-                            className="text-sm"
-                            style={{ color: colors.textMuted }}
-                          >
-                            {social.followers} Followers
-                          </p>
+                          <p className="font-bold" style={{ color: colors.text }}>{social.name}</p>
+                          <p className="text-sm" style={{ color: colors.textMuted }}>{social.followers} Followers</p>
                         </div>
                       </div>
-                      <div 
-                        className="px-4 py-2 rounded-full font-semibold text-sm"
-                        style={{ 
-                          backgroundColor: social.color,
-                          color: colors.background,
-                        }}
-                      >
-                        Follow
-                      </div>
+                      <div className="px-4 py-2 rounded-full font-semibold text-sm" style={{ backgroundColor: social.color, color: colors.background }}>Follow</div>
                     </motion.a>
                   ))}
                 </div>
