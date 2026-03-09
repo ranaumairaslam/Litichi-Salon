@@ -441,7 +441,9 @@ export default function offer() {
                       color: colors.background,
                     }}
                   >
-                    <span className="relative z-10">Claim This Offer</span>
+                    <span className="relative z-10"><a href="/bookopointment" target="_blank" rel="noopener noreferrer">
+                      Claim This Offer
+                    </a></span>
                     <ArrowRight size={18} className="relative z-10 group-hover:translate-x-1 transition-transform" />
                     
                     {/* Shine Effect */}
